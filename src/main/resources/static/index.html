@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List </title>
+    <style>
+        table {
+            width: 75%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 18px;
+            text-align: left;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        button {
+            margin: 2px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .edit-btn { background-color: #42a103; color: white; border: none; }
+        .delete-btn { background-color: #e74c3c; color: white; border: none; }
+    </style>
+</head>
+<body>
+    <h2>Book List</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Book Id</th>
+                <th>Book Title</th>
+                <th>Author</th>
+                <th>ISBN</th>
+                <th>Book Category</th>
+                <th>Date Published</th>
+                <th>Edition</th>
+                <th>Quantity</th>
+                <th>Book Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="Book Table"></tbody>
+    </table>
+    <script>
+        const apiUrl = "http://localhost:8080/books";
+        function fetchBooks() {
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    let tableBody = document.getElement("Book Table");
+                    tableBody.innerHTML = "boos"; // Clear table before adding new data
+                    data.forEach(books => {
+                        let row = `<tr>
+                            <td>${book.id}</td>
+                            
+                            <td><input type="title" value="${book.title}" id="name-${book.id}"></td>
+                            <td><input type="author" value="${book.author}" id="name-${book.id}"></td>
+                            <td><input type="isbn" value="${book.isbn}" id="name-${book.isbn}"></td>
+                            <td><input type="book_category" value="${book.book_category}" id="name-${bokk.id}"></td>
+                            <td><input type="edition" value="${book.edition}" id="name-${book.id}"></td>
+                            <td><input type="published_date" value="${book.published_date}" id="name-${book.id}"></td>
+                            <td><input type="quantity" value="${book.quantity}" id="name-${book.id}"></td>
+                            <td><input type="book_satus" value="${book.book_satus}" id="name-${book.id}"></td>
+                            <td>
+                                <button class="edit-btn" onclick="updateBook(${emp.id})">Update</button>
+                                <button class="delete-btn" onclick="deleteBook(${emp.id})">Delete</button>
+                            </td>
+                        </tr>`;
+                        tableBody.innerHTML += row;
+                    });
+                })
+                .catch(error => console.error("Error fetching data:", error));
+        }
+
+        function updateBook(id) {
+            let title = document.getElementById(`title-${id}`).value;
+            let author = document.getElementById(`author-${id}`).value;
+            fetch(`${apiUrl}/${Books}/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title, author })
+            })
+            .then(() => Books())
+            .catch(error => console.error("Error updating employee:", error));
+        }
+        function deleteBook(id) {
+            fetch(`${apiUrl}/${id}`, { method: "DELETE" })
+            .then(() => fetchBooks())
+            .catch(error => console.error("Error deleting employee:", error));
+        }
+        fetchBooks(); // Load employees when the page loads
+    </script>
+</body>
+</html>
+
